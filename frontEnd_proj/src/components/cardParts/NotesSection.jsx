@@ -3,16 +3,15 @@ import { useState, useEffect, useRef, memo } from "react";
 const MAX_CHARS = 280;
 
 function NotesSection({ monthKey, notes, onSave }) {
-  const [text,    setText]    = useState(notes || "");
-  const [saved,   setSaved]   = useState(false);
+  const [text, setText] = useState(notes || "");
+  const [saved, setSaved] = useState(false);
   const [focused, setFocused] = useState(false);
   const timerRef = useRef(null);
 
-  // sync text when switching months
   useEffect(() => {
     setText(notes || "");
     setSaved(false);
-  }, [monthKey]); // intentionally only re-sync on month change
+  }, [monthKey]);
 
   function handleChange(e) {
     const val = e.target.value;
@@ -36,20 +35,26 @@ function NotesSection({ monthKey, notes, onSave }) {
   }
 
   const remaining = MAX_CHARS - text.length;
-  const lowChars  = remaining <= 40;
+  const lowChars = remaining <= 40;
 
   return (
     <div style={{ marginBottom: 14 }}>
-
       {/* ── label row ── */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 6,
+        }}
+      >
         <p
           style={{
-            margin:        0,
-            color:         "rgba(255,255,255,0.38)",
-            fontSize:      9,
+            margin: 0,
+            color: "rgba(255,255,255,0.38)",
+            fontSize: 9,
             letterSpacing: "0.22em",
-            fontWeight:    700,
+            fontWeight: 700,
           }}
         >
           NOTES
@@ -58,7 +63,9 @@ function NotesSection({ monthKey, notes, onSave }) {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {/* saved badge */}
           {saved && !focused && (
-            <span style={{ color: "#4ade80", fontSize: 9, letterSpacing: "0.1em" }}>
+            <span
+              style={{ color: "#4ade80", fontSize: 9, letterSpacing: "0.1em" }}
+            >
               ✓ SAVED
             </span>
           )}
@@ -68,7 +75,7 @@ function NotesSection({ monthKey, notes, onSave }) {
             <span
               style={{
                 fontSize: 9,
-                color:    lowChars ? "#f87171" : "rgba(255,255,255,0.28)",
+                color: lowChars ? "#f87171" : "rgba(255,255,255,0.28)",
                 transition: "color 0.2s",
               }}
             >
@@ -81,13 +88,13 @@ function NotesSection({ monthKey, notes, onSave }) {
             <button
               onClick={handleClear}
               style={{
-                background:  "transparent",
-                border:      "none",
-                color:       "rgba(255,255,255,0.28)",
-                cursor:      "pointer",
-                fontSize:    10,
-                padding:     "0 2px",
-                lineHeight:  1,
+                background: "transparent",
+                border: "none",
+                color: "rgba(255,255,255,0.28)",
+                cursor: "pointer",
+                fontSize: 10,
+                padding: "0 2px",
+                lineHeight: 1,
               }}
               title="Clear notes"
             >
@@ -106,25 +113,23 @@ function NotesSection({ monthKey, notes, onSave }) {
         placeholder="Jot down plans, reminders…"
         rows={3}
         style={{
-          width:       "100%",
-          boxSizing:   "border-box",
-          background:  focused
+          width: "100%",
+          boxSizing: "border-box",
+          background: focused
             ? "rgba(43,143,232,0.08)"
             : "rgba(255,255,255,0.04)",
-          border:      `1px solid ${focused ? "rgba(43,143,232,0.55)" : "rgba(255,255,255,0.1)"}`,
+          border: `1px solid ${focused ? "rgba(43,143,232,0.55)" : "rgba(255,255,255,0.1)"}`,
           borderRadius: 10,
-          color:       "rgba(255,255,255,0.82)",
-          fontSize:    11,
-          lineHeight:  1.65,
-          padding:     "8px 10px",
-          resize:      "none",
-          outline:     "none",
-          fontFamily:  "inherit",
-          transition:  "border-color 0.2s, background 0.2s",
-          // prevent drag propagation to card swipe
+          color: "rgba(255,255,255,0.82)",
+          fontSize: 11,
+          lineHeight: 1.65,
+          padding: "8px 10px",
+          resize: "none",
+          outline: "none",
+          fontFamily: "inherit",
+          transition: "border-color 0.2s, background 0.2s",
           touchAction: "auto",
         }}
-        // stop pointer events from reaching the drag handler on the card stage
         onMouseDown={(e) => e.stopPropagation()}
         onTouchStart={(e) => e.stopPropagation()}
       />
@@ -133,17 +138,17 @@ function NotesSection({ monthKey, notes, onSave }) {
       {text.length > 0 && (
         <div
           style={{
-            marginTop:    4,
-            height:       2,
+            marginTop: 4,
+            height: 2,
             borderRadius: 2,
-            background:   "rgba(255,255,255,0.08)",
-            overflow:     "hidden",
+            background: "rgba(255,255,255,0.08)",
+            overflow: "hidden",
           }}
         >
           <div
             style={{
-              height:     "100%",
-              width:      `${(text.length / MAX_CHARS) * 100}%`,
+              height: "100%",
+              width: `${(text.length / MAX_CHARS) * 100}%`,
               background: lowChars ? "#f87171" : "#2b8fe8",
               borderRadius: 2,
               transition: "width 0.15s ease, background 0.3s ease",
